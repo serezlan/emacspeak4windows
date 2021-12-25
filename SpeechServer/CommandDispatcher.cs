@@ -1,10 +1,11 @@
-﻿namespace EmacspeakWindowsSpeechServer
-{
-    using System;
-    using System.Collections.Generic;
+﻿using NLog;
+using System.Collections.Generic;
 
+namespace SpeechServer
+{
     internal static class CommandDispatcher
     {
+        private static Logger _log = LogManager.GetCurrentClassLogger();
         private delegate void CommandHandler(string[] args);
 
         // Maps command names to methods.
@@ -22,7 +23,7 @@
             { "t", NotImplemented },
             { "sh", SpeechManager.QueueSilence },
             { "tts_reset", SpeechManager.Reset },
-            { "tts_set_punctuations", NotImplemented },
+            { "tts_set_punctuations", Punctuation.SetPunctuationMode },
             { "tts_set_speech_rate", SpeechManager.SetRate },
             { "tts_set_character_scale", SpeechManager.SetCharacterScale },
             { "tts_split_caps", NotImplemented },
@@ -32,6 +33,7 @@
 
         public static void Dispatch(Command command)
         {
+            _log.Info("Trying to dispatch: " + command.Name);
             if (command != null && commandTable.ContainsKey(command.Name))
             {
                 commandTable[command.Name](command.Arguments);

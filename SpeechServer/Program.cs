@@ -1,23 +1,28 @@
-﻿namespace EmacspeakWindowsSpeechServer
+using NLog;
+using System.IO;
+using System;
+using System.Reflection;
+
+namespace SpeechServer
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using System.Text;
 
     internal static class Program
     {
+        private static Logger _log = LogManager.GetCurrentClassLogger();
+
         internal static void Main(string[] args)
         {
+            ConfigureLogManager();
+            _log.Info("Starting Speech Server");
+
             try
             {
+                SayHello();
                 while (true)
                 {
                     string line = Console.ReadLine().Trim();
                     if (line.Length == 0)
-                    {
                         continue;
-                    }
 
                     var command = Command.Parse(line);
                     CommandDispatcher.Dispatch(command);
@@ -25,32 +30,36 @@
             }
             catch (Exception x)
             {
-                LogException(x);
+                _log.Error(x);
+
             }
         }
 
-        private static void LogException(Exception x)
+        private static void ConfigureLogger()
         {
-            // Calculate the log filename.
-            string executingAssemblyPath = Assembly.GetExecutingAssembly().Location;
-            string logPath = Path.Combine(Path.GetDirectoryName(executingAssemblyPath), Path.GetFileNameWithoutExtension(executingAssemblyPath) + ".log");
+            var config = new NLog.Config.LoggingConfiguration();
+            // Targets where to log to: File and Console
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "jasmine.log" };
+            var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
 
-            using (var sw = new StreamWriter(logPath, true, Encoding.UTF8))
-            {
-                sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                sw.WriteLine("Exception of type {0} was caught.", x.GetType().FullName);
-                sw.WriteLine("Message: {0}", x.Message);
+            // Rules for mapping loggers to targets            
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
 
-                if (x.InnerException != null)
-                {
-                    sw.WriteLine("Inner exception: {0}", x.InnerException.GetType().FullName);
-                    sw.WriteLine("Inner exception message: {0}", x.InnerException.Message);
-                }
+            // Apply config           
+            LogManager.Configuration = config;
 
-                sw.WriteLine("Stack Trace:");
-                sw.WriteLine(x.StackTrace);
-                sw.WriteLine();
-            }
+        }
+
+        private static void SayHello()
+        {
+            CommandDispatcher.Dispatch(Command.Parse("q {Jasmine sWindows TTS started }"));
+        }
+
+        private static void ConfigureLogManager()
+        {
+            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(assemblyPath + "\\nlog.config");
         }
     }
 }
