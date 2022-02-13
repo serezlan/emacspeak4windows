@@ -1,5 +1,5 @@
-# TARGET=%HOME%\emacs\share\emacs\site-lisp\emacspeak-53.0\servers
-TARGET=%HOME%\emacs\share\emacs\site-lisp\emacspeak\servers
+TARGET=%HOME%\emacs\share\emacs\site-lisp\emacspeak-53.0\servers
+# TARGET=%HOME%\emacs\share\emacs\site-lisp\emacspeak\servers
 
 exe:
 	dotnet build --nologo
