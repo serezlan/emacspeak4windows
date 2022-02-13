@@ -10,7 +10,7 @@ For convenience I have also included a preassembled archive in this repository, 
 
 ## Current Status
 
-This first version of the TTS server was really a proof of concept so that I could use Emacspeak more. Depending how much I use it, and how much interest I get from others, I may spend the time to make it more robust. Of course, pull requests are welcome. In particular, using multiple voices is not currently implemented.
+This version is now has been updated to use dotnet framework version 4.7 and emacspeak version 53.
 
 ## Trying It Out
 
@@ -18,28 +18,13 @@ This first version of the TTS server was really a proof of concept so that I cou
 
 First, you must download Emacs for Windows. You can find details on the [Emacs homepage](http://gnu.org/software/emacs).
 
-Personally, I have been working with Emacs 24.5, which is available at [http://ftp.gnu.org/gnu/emacs/windows/emacs-24.5-bin-i686-mingw32.zip]. In order to get EWW (the Emacs Web Wowser) to work, you also need the LibXML2 library, which you can get [here](http://sourceforge.net/projects/ezwinports/files).
-
 ### Use the Preassembled Archive
 
-A quick way to get up and running may be to use the preassembled archive. However, this is just what works on my machine, and I can't provide support for this - it should continue working with new versions of Emacs 24.x, and with all versions of Windows, but I haven't tried that. If it doesn't work for you, you could try building from source, as described below.
+A quick way to get up and running may be to use the preassembled archive. However, this is just what works on my machine, and I can't provide support for this - it should continue working with new versions of Emacs 27.2.x, and with all versions of Windows, but I haven't tried that. If it doesn't work for you, you could try building from source, as described below.
 
-Simply grab the preassembled/v43.zip file and uncompress it into your emacs directory. As the name implies, this is a compiled version of Emacspeak 43, plus the Windows speech server, and a batch file to help launch Emacspeak.
+Simply grab the preassembled/v53.zip file and uncompress it into your emacs directory. As the name implies, this is a compiled version of Emacspeak 53, plus the Windows speech server, and a batch file to help launch Emacspeak.
 
 To start Emacs with Emacspeak enabled, run emacs_dir\bin\emacspeak.cmd. Though not necessary, I'd recommend starting this from an elevated command prompt (or tick the run-as-administrator checkbox when creating a shortcut).
-
-### Build It Yourself
-
-* First, download and unpack Emacs binaries and Emacspeak source code. To unpack the latter, you will need a tool like [7-Zip](http://7-zip.com).
-* Then download and install [MSys](http://mingw.org/wiki/msys). Run "mingw-get msys-base" to get a basic command line environment, and then "mingw-get install msys-make" to download the GNU Make utility.
-* Add the Emacs bin directory to your path using a command like "export PATH=/c/emacs-24.5/bin:$PATH".
-* Change to the location where you unpacked Emacspeak, such as /c/Emacspeak-42.0.
-* Then type the three commands:
- * make config
- * make emacspeak
- * make prefix=/c/emacs install
-* Compile the speech server using the command line compiler that comes with Windows, or download a copy of Visual Studio Express. Copy it into the emacs/share/emacs/site-lisp/emacspeak/servers directory.
-* Set the environment variable dtk_program=windows, and finally, start Emacs with a command like c:\emacs\bin\emacs -q -l c:\emacs\share\emacs\site-lisp\emacspeak\lisp\emacspeak-setup.el. Alternatively, load Emacspeak in your .emacs file (see below).
 
 ### Emacs Configuration
 
@@ -57,4 +42,4 @@ The start of my .emacs file is below (many more customizations can be made):
 
 ## Feedback
 
-If you try this out, and particularly if you find it useful, please do get in touch. You can email "Me" at "SaqibShaikh.com".
+If you try this out, and particularly if you find it useful, please do get in touch. You can email "Me" at "yusuf.ismail01157@gmail.com".
